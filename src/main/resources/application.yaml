@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/bankdb
+    username: postgres
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  secret: xFj/saS6edhJV6Knffl9t/LOsItXVoCIzNhXwFqrI7csHejTI/cg06gYavg1VuKn0ixvrIzBWDTC6UpjP3FEqQ==
+  expiration: 86400000

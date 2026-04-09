@@ -1,0 +1,34 @@
+Aquí tienes la explicación en español sobre tu situación:
+
+Sobre el error `getBalance()`:
+El proyecto compiló exitosamente después de ejecutar `mvn clean install`. Esto significa que el método `getBalance()` para la entidad `Account` se está generando correctamente gracias a Lombok y no hay errores de compilación en el código. Es muy probable que el error que veías en tu entorno de desarrollo (IDE) fuera causado por una caché desactualizada o un problema con el plugin de Lombok en el IDE. Te sugiero que intentes limpiar la caché de tu IDE y reiniciar, o refrescar el proyecto.
+
+Sobre `PUT` y `GET` en Postman:
+
+1.  **Asegúrate de que la API esté realmente ejecutándose:** Compilar el proyecto no significa que esté en funcionamiento. Para iniciar tu aplicación Spring Boot, debes ejecutar el siguiente comando en la terminal desde la raíz de tu proyecto:
+    ```bash
+    mvn spring-boot:run
+    ```
+    Una vez que veas mensajes indicando que Spring Boot ha iniciado (normalmente en el puerto 8080 por defecto si no lo configuraste diferente), entonces la API estará "levantada".
+
+2.  **Endpoints disponibles:**
+    *   **GET:** Hemos revisado tus controladores y encontramos un endpoint `GET` en `AccountController` para obtener el saldo de una cuenta:
+        *   **Método:** `GET`
+        *   **URL:** `http://localhost:8080/api/accounts/{accountNumber}/balance`
+        *   **Ejemplo:** Si tuvieras una cuenta con número "12345", la URL sería `http://localhost:8080/api/accounts/12345/balance`
+
+    *   **PUT:** No encontramos ningún endpoint `PUT` definido explícitamente en `AccountController.java` ni en `TransactionController.java`. Si necesitas realizar operaciones de actualización (PUT), tendrás que definir el método correspondiente en uno de tus controladores.
+
+    *   **POST:** Sí encontramos un endpoint `POST` para transferencias en `TransactionController`:
+        *   **Método:** `POST`
+        *   **URL:** `http://localhost:8080/api/transactions/transfer`
+        *   **Body (JSON):**
+            ```json
+            {
+                "sourceAccountNumber": "cuentaOrigen",
+                "destinationAccountNumber": "cuentaDestino",
+                "amount": 100.00
+            }
+            ```
+
+En resumen, verifica que la API esté corriendo (`mvn spring-boot:run`) y luego utiliza los endpoints con los métodos correctos en Postman. Si necesitas una funcionalidad `PUT`, deberías agregarla a tus controladores.
