@@ -1,4 +1,4 @@
-# 🏦 API-Bank
+# 🏦 Banking API
 
 Secure banking REST API built with Spring Boot, JWT authentication and PostgreSQL.
 
@@ -8,134 +8,197 @@ Secure banking REST API built with Spring Boot, JWT authentication and PostgreSQ
 ![JWT](https://img.shields.io/badge/Auth-JWT-red?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
+## 📋 Table of Contents
 
-## Features
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Technologies](#technologies)
+- [Installation](#installation)
+- [Running the Application](#running-the-application)
+- [Testing](#testing)
+- [API Documentation](#api-documentation)
+- [Endpoints](#endpoints)
+- [Usage Examples](#usage-examples)
+- [Postman Testing](#postman-testing)
+- [Project Structure](#project-structure)
+- [Troubleshooting](#troubleshooting)
+- [Docker](#docker)
+- [License](#license)
 
-- JWT Authentication & Authorization
-- Role-based Security
-- Money Transfers
-- Account Management
-- Transaction History
-- Swagger/OpenAPI Documentation
-- Unit & Service Testing
-- Global Exception Handling
-- PostgreSQL Integration
-## Requisitos previos
-- **Java 21** o superior
+## ✨ Features
+
+- 🔐 **JWT Authentication & Authorization** - Secure token-based authentication
+- 👥 **Role-based Security** - Different access levels for users
+- 💸 **Money Transfers** - Secure inter-account transfers
+- 💼 **Account Management** - Create and manage bank accounts
+- 📊 **Transaction History** - Track all transactions
+- 📚 **Swagger/OpenAPI Documentation** - Interactive API documentation
+- ✅ **Unit & Service Testing** - Comprehensive test coverage with JUnit 5 & Mockito
+- 🚨 **Global Exception Handling** - Centralized error management
+- 🗄️ **PostgreSQL Integration** - Reliable relational database
+
+## 📋 Prerequisites
+
+- **Java 21** or higher
 - **Maven 3.8+**
 - **PostgreSQL 12+**
 - **Git**
-## Tecnologías
-- **Java 21** con Spring Boot 3.5
+
+## 🛠️ Technologies
+
+- **Java 21** with Spring Boot 3.5
 - **Spring Security** (JWT)
 - **Spring Data JPA**
 - **PostgreSQL**
 - **Lombok**
-- **JUnit 5** y **Mockito** (testing)
-- **Swagger/OpenAPI** (documentación)
-## Instalación
-### 1. Clonar el proyecto
+- **JUnit 5** and **Mockito** (testing)
+- **Swagger/OpenAPI** (API documentation)
+
+## 🚀 Installation
+
+### 1. Clone the project
+
 ```bash
 git clone <repo-url>
 cd API-Bank
 ```
-### 2. Configurar base de datos
-Crear base de datos PostgreSQL:
+
+### 2. Configure database
+
+Create PostgreSQL database:
+
 ```sql
 CREATE DATABASE bankdb;
-CREATE USER bankuser WITH PASSWORD 'tu_password';
+CREATE USER bankuser WITH PASSWORD 'your_password';
 ALTER ROLE bankuser SET client_encoding TO 'utf8';
 GRANT ALL PRIVILEGES ON DATABASE bankdb TO bankuser;
 ```
-### 3. Crear archivo de entorno
+
+### 3. Create environment file
+
 ```bash
 cp .env.example .env
 ```
-### 4. Configurar variables de entorno
-Editar `.env` con tus valores:
-```
+
+### 4. Configure environment variables
+
+Edit `.env` with your values:
+
+```env
 DB_URL=jdbc:postgresql://localhost:5432/bankdb
 DB_USERNAME=bankuser
-DB_PASSWORD=tu_password
-JWT_SECRET=<genera uno con: openssl rand -base64 64>
+DB_PASSWORD=your_password
+JWT_SECRET=<generate with: openssl rand -base64 64>
 JWT_EXPIRATION=86400000
 ```
-Genera un secreto JWT seguro:
+
+Generate a secure JWT secret (run once):
+
 ```bash
 openssl rand -base64 64
 ```
-## Ejecución
-### Desde terminal
+
+## ▶️ Running the Application
+
+### From terminal
+
 ```bash
 ./mvnw spring-boot:run
 ```
-### Desde IntelliJ IDEA
-1. Click derecho en el proyecto → `Run 'API-Bank [spring-boot:run]'`
-2. O usar el botón `Run` en la clase principal
-La API estará disponible en `http://localhost:8080`
-## Testing
-### Ejecutar todas las pruebas
+
+### From IntelliJ IDEA
+
+1. Right-click on the project → `Run 'API-Bank [spring-boot:run]'`
+2. Or use the `Run` button in the main class
+
+The API will be available at `http://localhost:8080`
+
+## 🧪 Testing
+
+### Run all tests
+
 ```bash
 ./mvnw test
 ```
-### Ejecutar pruebas de una clase específica
+
+### Run specific test class
+
 ```bash
 ./mvnw test -Dtest=UserControllerTest
 ```
-## Documentación con Swagger
-Acceder a la interfaz de Swagger UI:
+
+## 📚 API Documentation
+
+Access the Swagger UI interface:
+
 ```
 http://localhost:8080/swagger-ui.html
 ```
-Documentación OpenAPI JSON:
+
+OpenAPI JSON documentation:
+
 ```
 http://localhost:8080/v3/api-docs
 ```
-## Endpoints
-### Autenticación
-| Método | Endpoint | Descripción |
+
+## 🔌 Endpoints
+
+### Authentication
+
+| Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/auth/register` | Registrar usuario |
-| POST | `/api/auth/login` | Iniciar sesión |
-### Cuentas
-| Método | Endpoint | Descripción |
+| POST | `/api/auth/register` | Register a new user |
+| POST | `/api/auth/login` | User login |
+
+### Accounts
+
+| Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/accounts` | Crear cuenta |
-| GET | `/api/accounts/{accountNumber}/balance` | Consultar saldo |
-### Transacciones
-| Método | Endpoint | Descripción |
+| POST | `/api/accounts` | Create a new account |
+| GET | `/api/accounts/{accountNumber}/balance` | Get account balance |
+
+### Transactions
+
+| Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/transactions/transfer` | Transferencia entre cuentas |
-## Ejemplos de uso
-### Registro de usuario
+| POST | `/api/transactions/transfer` | Transfer money between accounts |
+
+## 📝 Usage Examples
+
+### User Registration
+
 ```bash
 curl -X POST http://localhost:8080/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Juan Pérez",
-    "email": "juan@example.com",
-    "password": "password123"
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "securePassword123"
   }'
 ```
-**Respuesta exitosa (201):**
+
+**Successful Response (201):**
 ```json
 {
   "id": 1,
-  "name": "Juan Pérez",
-  "email": "juan@example.com",
+  "name": "John Doe",
+  "email": "john@example.com",
   "createdAt": "2024-01-15T10:30:00"
 }
 ```
-### Login
+
+### User Login
+
 ```bash
 curl -X POST http://localhost:8080/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "juan@example.com",
-    "password": "password123"
+    "email": "john@example.com",
+    "password": "securePassword123"
   }'
 ```
-**Respuesta exitosa (200):**
+
+**Successful Response (200):**
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -143,7 +206,9 @@ curl -X POST http://localhost:8080/api/auth/login \
   "expiresIn": 86400000
 }
 ```
-### Crear cuenta (requiere JWT)
+
+### Create Account (requires JWT)
+
 ```bash
 curl -X POST http://localhost:8080/api/accounts \
   -H "Authorization: Bearer <TOKEN>" \
@@ -153,7 +218,9 @@ curl -X POST http://localhost:8080/api/accounts \
     "initialBalance": 1000.00
   }'
 ```
-### Transferencia
+
+### Money Transfer
+
 ```bash
 curl -X POST http://localhost:8080/api/transactions/transfer \
   -H "Authorization: Bearer <TOKEN>" \
@@ -164,7 +231,8 @@ curl -X POST http://localhost:8080/api/transactions/transfer \
     "amount": 100.00
   }'
 ```
-**Respuesta exitosa (200):**
+
+**Successful Response (200):**
 ```json
 {
   "message": "Transfer successful",
@@ -174,60 +242,106 @@ curl -X POST http://localhost:8080/api/transactions/transfer \
   "timestamp": "2024-01-15T10:35:00"
 }
 ```
-## Pruebas con Postman
-### 1. Configurar variable de entorno
-En Postman, crear un environment con:
+
+## 📮 Postman Testing
+
+### 1. Configure Environment Variables
+
+In Postman, create an environment with:
+
 ```json
 {
   "base_url": "http://localhost:8080",
   "token": ""
 }
 ```
-### 2. Flujo de prueba recomendado
-1. **Registrar usuario** → Guardar ID
-2. **Login** → Copiar token a variable `token`
-3. **Crear cuenta** → Usar el ID del usuario
-4. **Consultar saldo** → Verificar inicialización
-5. **Transferencia** → Probar entre cuentas
-## Estructura del proyecto
+
+### 2. Recommended Testing Flow
+
+1. **Register User** → Save the user ID
+2. **Login** → Copy token to `token` variable
+3. **Create Account** → Use the user ID
+4. **Check Balance** → Verify initialization
+5. **Transfer Money** → Test between accounts
+
+## 📁 Project Structure
+
 ```
 src/main/java/com/tony/bankapi/
-├── controller/        # Controladores REST
-├── service/          # Lógica de negocio
-├── repository/       # Acceso a datos
+├── controller/        # REST Controllers
+├── service/          # Business Logic
+├── repository/       # Data Access
 ├── dto/              # Data Transfer Objects
-├── entity/           # Entidades JPA
-├── config/           # Configuración (CORS, JWT, Swagger)
-└── exception/        # Manejo centralizado de errores
+├── entity/           # JPA Entities
+├── config/           # Configuration (CORS, JWT, Swagger)
+└── exception/        # Centralized Error Handling
+
 src/test/java/com/tony/bankapi/
-├── controller/       # Tests de controladores
-└── service/          # Tests de servicios
+├── controller/       # Controller Tests
+└── service/          # Service Tests
 ```
-## Solución de problemas
+
+## 🔧 Troubleshooting
+
 ### Error: `FATAL: role "postgres" does not exist`
-Asegurate que PostgreSQL está corriendo y el usuario existe:
+
+Ensure PostgreSQL is running and the user exists:
+
 ```bash
 psql -U postgres -l
 ```
+
 ### Error: `JWT secret not configured`
-Verifica que la variable `JWT_SECRET` está definida en `.env`.
-### Error: Puerto 8080 ocupado
-Si el puerto 8080 está ocupado, usa otro:
+
+Verify that the `JWT_SECRET` variable is set in `.env`.
+
+### Error: Port 8080 already in use
+
+If port 8080 is occupied, use another port:
+
 ```bash
 ./mvnw spring-boot:run -Dspring-boot.run.arguments="--server.port=8081"
 ```
-### Error de conexión a BD
-Verifica credenciales en `application.yaml`:
+
+### Error: Database connection failed
+
+Check credentials in `application.yaml`:
+
 ```yaml
 spring:
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/bankdb}
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 ```
-## Docker
+
+## 🐳 Docker
+
+Run the entire application stack with Docker:
+
 ```bash
 docker-compose up -d
 ```
-## Licencia
-MIT
+
+Stop the services:
+
+```bash
+docker-compose down
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
+
+**Made with ❤️ by Tony**
+
+For questions or support, please open an issue in the repository.
