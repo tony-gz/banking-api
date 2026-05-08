@@ -1,15 +1,17 @@
 package com.tony.bankapi.dto;
 
+import java.math.BigDecimal;
+
 public class AccountResponse {
     private String accountNumber;
-    private Double balance;
+    private BigDecimal balance;
 
-    public AccountResponse(String accountNumber, Double balance){
+    public AccountResponse(String accountNumber, BigDecimal balance){
         this.accountNumber = accountNumber;
         this.balance = balance;
     }
 
-    public Double getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 

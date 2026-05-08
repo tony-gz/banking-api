@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,16 +20,21 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double amount;
+    @Column(nullable = false)
+    private BigDecimal amount;
 
+    @Column(nullable = false)
     private LocalDateTime timestamp;
 
+    @Column(nullable = false)
     private String type; //TRANSFER, DEPOSIT, WITHDRAW
 
     @ManyToOne
+    @JoinColumn(name = "source_account_id")
     private Account sourceAccount;
 
     @ManyToOne
+    @JoinColumn(name = "destination_account_id")
     private Account destinationAccount;
 
 }

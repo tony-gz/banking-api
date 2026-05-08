@@ -1,32 +1,22 @@
 package com.tony.bankapi.dto;
 
+import jakarta.validation.constraints.*;
+import java.math.BigDecimal;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class TransferRequest {
 
+    @NotBlank
     private String sourceAccountNumber;
+
+    @NotBlank
     private String destinationAccountNumber;
-    private Double amount;
 
-    public String getSourceAccountNumber() {
-        return sourceAccountNumber;
-    }
+    @NotNull
+    @DecimalMin(value = "0.01")
+    private BigDecimal amount;
 
-    public void setSourceAccountNumber(String sourceAccountNumber) {
-        this.sourceAccountNumber = sourceAccountNumber;
-    }
-
-    public String getDestinationAccountNumber() {
-        return destinationAccountNumber;
-    }
-
-    public void setDestinationAccountNumber(String destinationAccountNumber) {
-        this.destinationAccountNumber = destinationAccountNumber;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
 }

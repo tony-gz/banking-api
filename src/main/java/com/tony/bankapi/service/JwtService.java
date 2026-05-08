@@ -74,7 +74,16 @@ public class JwtService {
     }
 
     private SecretKey getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        if (secretKey == null || secretKey.isBlank()) {
+            throw new IllegalStateException("jwt.secret is not configured");
+        }
+        String normalized = secretKey.trim();
+        if ((normalized.startsWith("\"") && normalized.endsWith("\""))
+                || (normalized.startsWith("'") && normalized.endsWith("'"))) {
+            normalized = normalized.substring(1, normalized.length() - 1).trim();
+        }
+        normalized = normalized.replaceAll("\\s+", "");
+        byte[] keyBytes = Decoders.BASE64.decode(normalized);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

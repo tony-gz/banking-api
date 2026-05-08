@@ -4,6 +4,8 @@ import com.tony.bankapi.dto.AccountRequest;
 import com.tony.bankapi.dto.AccountResponse;
 import com.tony.bankapi.entity.Account;
 import com.tony.bankapi.entity.User;
+import com.tony.bankapi.exception.AccountNotFoundException;
+import com.tony.bankapi.exception.UserNotFoundException;
 import com.tony.bankapi.repository.AccountRepository;
 import com.tony.bankapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +27,7 @@ public class AccountController {
     @PostMapping
     public ResponseEntity<AccountResponse> createAccount(@RequestBody AccountRequest request) {
         User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         Account account = new Account();
         account.setAccountNumber(request.getAccountNumber());
@@ -42,7 +44,7 @@ public class AccountController {
     public ResponseEntity<AccountResponse> getBalance(@PathVariable String accountNumber){
 
         Account account = accountRepository.findByAccountNumber(accountNumber)
-                .orElseThrow(() -> new RuntimeException("Account not found"));
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
 
         AccountResponse response =
                 new AccountResponse(account.getAccountNumber(), account.getBalance());

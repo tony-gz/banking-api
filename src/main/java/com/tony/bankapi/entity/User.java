@@ -5,8 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -29,12 +28,12 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role = Role.USER;
-    //private String role;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Account> accounts;
 
     public enum Role {
         ADMIN,

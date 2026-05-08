@@ -1,7 +1,9 @@
 package com.tony.bankapi.controller;
 
 import com.tony.bankapi.dto.TransferRequest;
+import com.tony.bankapi.dto.TransferResponse;
 import com.tony.bankapi.service.TransactionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,14 +19,14 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @PostMapping("/transfer")
-    public ResponseEntity<String> transfer(@RequestBody TransferRequest request){
+    public ResponseEntity<TransferResponse> transfer(@Valid @RequestBody TransferRequest request){
 
-        transactionService.transfer(
+        TransferResponse response = transactionService.transfer(
                 request.getSourceAccountNumber(),
                 request.getDestinationAccountNumber(),
                 request.getAmount()
         );
 
-        return ResponseEntity.ok("Transfer successful");
+        return ResponseEntity.ok(response);
     }
 }

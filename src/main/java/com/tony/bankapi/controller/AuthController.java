@@ -1,11 +1,16 @@
 package com.tony.bankapi.controller;
 
 import com.tony.bankapi.dto.AuthResponse;
-import com.tony.bankapi.dto.UserRequest;
+import com.tony.bankapi.dto.LoginRequest;
+import com.tony.bankapi.dto.RegisterRequest;
 import com.tony.bankapi.entity.User;
+import com.tony.bankapi.exception.ErrorResponse;
+import com.tony.bankapi.exception.UserNotFoundException;
 import com.tony.bankapi.repository.UserRepository;
 import com.tony.bankapi.service.JwtService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,6 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -29,9 +36,14 @@ public class AuthController {
     private final UserDetailsService userDetailsService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody UserRequest request) {
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().build();
+            ErrorResponse error = new ErrorResponse();
+            error.setStatus(HttpStatus.CONFLICT.value());
+            error.setMessage("Email is already registered");
+            error.setPath("/api/auth/register");
+            error.setTimestamp(LocalDateTime.now());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
         }
 
         User user = new User();
@@ -56,13 +68,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody UserRequest request) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
         String token = jwtService.generateToken(userDetails);

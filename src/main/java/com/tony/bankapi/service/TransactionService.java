@@ -1,7 +1,10 @@
 package com.tony.bankapi.service;
 
+import com.tony.bankapi.dto.TransferResponse;
+import java.math.BigDecimal;
+
 public interface TransactionService {
-    void transfer(String sourceAccountNumber,
+    TransferResponse transfer(String sourceAccountNumber,
                   String destinationAccountNumber,
-                  Double amount);
+                  BigDecimal amount);
 }
